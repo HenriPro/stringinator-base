@@ -31,13 +31,26 @@ const indexOf = function(array, target, fromIndex=0) {
 };
 
 const isArrayLike = function(obj) {
-  // Your code goes here
+  const length = obj["length"];
+  if (length >= 0 && typeof length === "number") {
+    return true;
+  }
+  return false;
 };
 
 // The cornerstone of a functional library -- iterate all elements, pass each to a callback function.
 // See https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
 const each = function(obj, callback=identity) {
-  // Your code goes here
+  if(isArrayLike(obj)){
+    for (let i = 0; i < obj.length; i++) {
+      callback(obj[i], i, obj);
+    }
+  } else {
+    for (let key in obj) {
+      callback(obj[key], key, obj);
+    }
+  }
+
 };
 
 // Return the results of applying the callback to each element.
