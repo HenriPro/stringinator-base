@@ -56,13 +56,21 @@ const each = function(obj, callback=identity) {
 // Return the results of applying the callback to each element.
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map
 const map = function(obj, callback=identity) {
-  // Your code goes here
+  let mapped = [];
+  each(obj, (currentValue, keyOrIndex, obj) => {
+    mapped.push(callback(currentValue, keyOrIndex, obj));
+  });
+  return mapped;
 };
 
 // Return an array of the values o a certain property in the collection.
 // E.g. given an array of people objects, return an array of just their ages.
 const pluck = function(obj, key) {
-  // Your code goes here
+  let plunked = [];
+  each(obj, (currentValue, keyOrIndex, iteratedObj) => {
+    plunked.push(currentValue[key]);
+  });
+  return plunked;
 };
 
 // Reduces collection to a value which is the accumulated result of running
@@ -73,11 +81,33 @@ const pluck = function(obj, key) {
 // (accumulator, value, index|key, collection).
 const reduce = function(obj, callback=identity, initialValue) {
   // Your code goes here
+  let accumulator = initialValue;
+  let initializing = accumulator === undefined;
+
+  each(obj, (currentValue, keyOrIndex, iteratedObj) => {
+    if (initializing) {
+      initializing = false
+      accumulator = currentValue;
+    } else {
+      accumulator = callback(accumulator, currentValue, keyOrIndex, iteratedObj);
+    }
+  });
+  return accumulator;
 };
 
 // Return true if the object contains the target.
 const contains = function(obj, target) {
-  // Your code goes here
+  let result;
+  each(obj, (currentValue) => {
+    if (currentValue === target) {
+      result = true;
+      return;
+    };
+  });
+  if (result === undefined) {
+    result = false;
+  }
+  return result;
 };
 
 // Return true if all the elements / object values are accepted by the callback.
