@@ -112,27 +112,60 @@ const contains = function(obj, target) {
 
 // Return true if all the elements / object values are accepted by the callback.
 const every = function(obj, callback=identity) {
-  // Your code goes here
+  let result = true;
+  each(obj, (currentValue) => {
+    if (callback(currentValue)) {
+      // do nothing
+    } else {
+      result = false;
+    }
+  });
+  return result;
 };
 
 // Return true if even 1 element / object value is accepted by the callback.
 const some = function(obj, callback=identity) {
-  // Your code goes here
+  let result = false;
+  each(obj, (currentValue) => {
+    if (callback(currentValue)) {
+      result = true;
+    }
+  });
+  return result;
+
+
 };
 
 // Return an array with all elements / object values that are accepted by the callback.
 const filter = function(obj, callback=identity) {
-  // Your code goes here
+    let filtered = [];
+    each(obj, (ele, indexOrKey, iterratedObj) => {
+      if (callback(ele, indexOrKey, iterratedObj)) {
+        filtered.push(ele);
+      }
+    });
+    return filtered;
 };
 
-// Return object without the elements / object valuesthat were rejected by the callback.
-const reject = function(arr, callback=identity) {
-  // Your code goes here
+// Return object without the elements / object values that were rejected by the callback.
+const reject = function(obj, callback=identity) {
+  let rejected = [];
+  each(obj, (ele, indexOrKey, iterratedObj) => {
+    if (!callback(ele, indexOrKey, iterratedObj)) {
+      rejected.push(ele);
+    }
+  });
+  return rejected;
+
 };
 
 // De-duplicates (de-dups) the elements / object values.
 const uniq = function(obj) {
-  // Your code goes here
+  const set = new Set;
+  each(obj, (ele) => {
+    set.add(ele);
+  });
+  return [...set];
 };
 
 
